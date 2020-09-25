@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Etch-a-Sketch</title>
+</head>
+<body>
+    <div>
+        <button type="button">Reset</button>
+    </div>
+    <h1>Etch-a-Sketch</h1>
+    <div id="container"></div>
+</body>
+</html>
+<script>
+    // Make first grid of 16x16 squares
+    for (let index = 0; index < 256; index++) {
+        const container = document.querySelector("#container");
+        const gridSquare = document.createElement("div"); 
+        gridSquare.classList.add("square"); 
+        container.appendChild(gridSquare)
+    }
+    //add hover
+    let l = 100;
+    let i = 0
+    function addHover(e) {
+        if (i == 10) { // after 10 times: reset
+            l = 100;
+            i = 0;
+        }
+        // random color
+        e.target.style.background =`hsl(${Math.random()*361}, ${Math.random()*101}%, ${l}%)`;
+        i ++ ;
+        l = l - 10; // 10 times: color = black
+    }
+    squares = document.querySelectorAll(".square")
+    squares.forEach(square => square.addEventListener("mouseover", addHover))
+    // add event listner for button 
+    const btn = document.querySelector("button");
+    btn.addEventListener("click", getNewGrid)
+    function getNewGrid() {
+        let num = prompt("How many squares per side to make the new grid (<=30)")
+        if (num > 30) {
+            return "Error"
+        }
+        num = Number(num)
+        squares = document.querySelectorAll(".square")
+        squares.forEach((square) => {
+            container.removeChild(square);
+        }) 
+        for (let index = 0; index < num*num; index++) {
+        
+        const gridSquare = document.createElement("div"); 
+        gridSquare.classList.add("square"); 
+        container.appendChild(gridSquare)
+        }
+        // change grid style
+        container.style.gridTemplateColumns = `repeat(${num}, 1fr)`;  
+        container.style. gridTemplateRows = `repeat(${num}, 1fr)`;
+        container.style.border = "1px solid pink";
+        
+        squares = document.querySelectorAll(".square")
+        squares.forEach(square => square.addEventListener("mouseover", addHover))
+    }
+    
+</script>
+<style>
+    body {
+        background: darkgray;
+    }
+    h1 {
+        text-align: center;
+        color: cyan;
+    }
+    #container {
+        display: grid;
+        border: 1px solid pink;
+        width: 40vw;
+        height: 40vw;
+        margin: auto;
+        padding: 5px;
+        grid-template-columns: repeat(16, 1fr);
+        grid-template-rows: repeat(16, 1fr);
+        grid-gap: 5px;
+
+    }
+    .square {
+        /* border: 1px solid green; */
+        background: gray;
+    }
+    
+    button {
+        padding: 10px;  
+    }
+</style>
